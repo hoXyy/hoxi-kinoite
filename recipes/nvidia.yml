@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  - type: dnf
+    repos:
+      cleanup: true
+      files:
+        - https://negativo17.org/repos/fedora-nvidia.repo
+        - https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo
+    install:
+      packages:
+        - nvidia-driver
+        - nvidia-driver-libs.i686
+        - nvidia-driver-cuda-libs.i686
+        - nvidia-settings
+        - akmod-nvidia
+        - egl-wayland
+        - libva-nvidia-driver
+        - nvidia-driver-cuda
+        - nvidia-driver-cuda-libs
+        - nvidia-container-toolkit
+        - nvidia-container-toolkit-base
+        - libnvidia-container-tools
+        - libnvidia-container1
+      exclude:
+          - cachyos-settings
+
+  - type: script
+    snippets:
+      - dnf5 install -y mesa-dri-drivers.i686 mesa-filesystem.i686 mesa-libEGL.i686 mesa-libGL.i686 mesa-libgbm.i686 mesa-vulkan-drivers.i686
+
+  - type: script
+    snippets:
+        - VER=$(basename /usr/lib/modules/*) &&
+          akmods --force --kernels $VER &&
+          depmod -a $VER &&
+          DRACUT_NO_XATTR=1 &&
+          dracut --kver $VER --force --add ostree --no-hostonly --reproducible /usr/lib/modules/$VER/initramfs.img
+
+  - type: script
+    snippets:
+      - sed -i 's@omit_drivers@force_drivers@g' /usr/lib/dracut/dracut.conf.d/99-nvidia.conf
+      - sed -i 's@ nvidia @ i915 amdgpu nvidia @g' /usr/lib/dracut/dracut.conf.d/99-nvidia.conf
+
+  - type: script
+    snippets:
+      - semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
+
+  - type: script
+    snippets:
+      - systemctl enable nvidia-cdi-generate.service
+      - dnf -y config-manager unsetopt tsflags
+
+  - type: kargs
+    kargs:
+      - rd.driver.blacklist=nouveau
+      - modprobe.blacklist=nouveau
+      - nvidia-drm.modeset=1

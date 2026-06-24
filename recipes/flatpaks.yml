@@ -11,4 +11,8 @@ modules:
           - com.vysp3r.ProtonPlus
           - org.kde.haruna
           - io.github.radiolamp.mangojuice
+          - com.onepassword.OnePassword
+          - com.github.tchx84.Flatseal
+          - com.usebottles.bottles
+          - it.mijorus.gearlever
       - scope: user

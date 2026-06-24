@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  - type: dnf
+    repos:
+      files: 
+        remove:
+          - terra
+ 
+  - type: script
+    snippets:
+      - dnf -y config-manager unsetopt tsflags
+      - dnf -y config-manager unsetopt install_weak_deps

@@ -47,10 +47,10 @@ modules:
     snippets:
       - semodule --verbose --install /usr/share/selinux/packages/nvidia-container.pp
 
-  - type: script
-    snippets:
-      - systemctl enable nvidia-cdi-generate.service
-      - dnf -y config-manager unsetopt tsflags
+  - type: systemd
+    system:
+      enabled:
+        - nvidia-cdi-generate.service
 
   - type: kargs
     kargs:

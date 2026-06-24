@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  - type: default-flatpaks
+    configurations:
+      - notify: true
+        scope: system
+        install:
+          - com.spotify.Client
+          - com.vysp3r.ProtonPlus
+          - org.kde.haruna
+          - io.github.radiolamp.mangojuice
+      - scope: user

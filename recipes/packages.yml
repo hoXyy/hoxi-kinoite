@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://schema.blue-build.org/module-list-v1.json
+
+modules:
+  - type: script
+    snippets:
+      - dnf5 install -y --nogpgcheck --repofrompath 'terra,https://repos.fyralabs.com/terra$releasever' terra-release terra-gpg-keys
+
+  - type: dnf
+    repos:
+      cleanup: true
+      files: 
+        - https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+    install:
+      packages:
+        - bat
+        - btop
+        - jq
+        - asusctl
+        - asusctl-rog-gui
+        - ScopeBuddy
+        - steam
+        - steam-devices
+        - brave-origin
+        - discord
+        - obs-studio
+        - dmemcg-booster
+        - plasma-foreground-booster-dmemcg
+    remove:
+      packages:
+        - firefox
+        - firefox-langpacks
+
+  # - type: script
+  #   scripts:
+  #     - 1password.sh
+
